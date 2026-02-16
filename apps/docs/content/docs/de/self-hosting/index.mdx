@@ -25,21 +25,9 @@ Stellen Sie Sim auf Ihrer eigenen Infrastruktur mit Docker oder Kubernetes berei
 Die Ressourcenanforderungen werden durch Workflow-Ausführung (isolated-vm Sandboxing), Dateiverarbeitung (In-Memory-Dokumentenparsing) und Vektoroperationen (pgvector) bestimmt. Arbeitsspeicher ist typischerweise der limitierende Faktor, nicht CPU. Produktionsdaten zeigen, dass die Hauptanwendung durchschnittlich 4-8 GB und bei hoher Last bis zu 12 GB benötigt.
 </Callout>
 
-## Schnellstart
-
-```bash
-git clone https://github.com/simstudioai/sim.git && cd sim
-docker compose -f docker-compose.prod.yml up -d
-```
-
-Öffnen Sie [http://localhost:3000](http://localhost:3000)
-
 ## Bereitstellungsoptionen
 
 <Cards>
-  <Card title="Docker" href="/self-hosting/docker">
-    Bereitstellung mit Docker Compose auf jedem Server
-  </Card>
   <Card title="Kubernetes" href="/self-hosting/kubernetes">
     Bereitstellung mit Helm auf Kubernetes-Clustern
   </Card>

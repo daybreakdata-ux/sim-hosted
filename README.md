@@ -14,7 +14,7 @@
 </p>
 
 <p align="center">
-  <a href="https://deepwiki.com/simstudioai/sim" target="_blank" rel="noopener noreferrer"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>  <a href="https://cursor.com/link/prompt?text=Help%20me%20set%20up%20Sim%20locally.%20Follow%20these%20steps%3A%0A%0A1.%20First%2C%20verify%20Docker%20is%20installed%20and%20running%3A%0A%20%20%20docker%20--version%0A%20%20%20docker%20info%0A%0A2.%20Clone%20the%20repository%3A%0A%20%20%20git%20clone%20https%3A%2F%2Fgithub.com%2Fsimstudioai%2Fsim.git%0A%20%20%20cd%20sim%0A%0A3.%20Start%20the%20services%20with%20Docker%20Compose%3A%0A%20%20%20docker%20compose%20-f%20docker-compose.prod.yml%20up%20-d%0A%0A4.%20Wait%20for%20all%20containers%20to%20be%20healthy%20(this%20may%20take%201-2%20minutes)%3A%0A%20%20%20docker%20compose%20-f%20docker-compose.prod.yml%20ps%0A%0A5.%20Verify%20the%20app%20is%20accessible%20at%20http%3A%2F%2Flocalhost%3A3000%0A%0AIf%20there%20are%20any%20errors%2C%20help%20me%20troubleshoot%20them.%20Common%20issues%3A%0A-%20Port%203000%2C%203002%2C%20or%205432%20already%20in%20use%0A-%20Docker%20not%20running%0A-%20Insufficient%20memory%20(needs%2012GB%2B%20RAM)%0A%0AFor%20local%20AI%20models%20with%20Ollama%2C%20use%20this%20instead%20of%20step%203%3A%0A%20%20%20docker%20compose%20-f%20docker-compose.ollama.yml%20--profile%20setup%20up%20-d"><img src="https://img.shields.io/badge/Set%20Up%20with-Cursor-000000?logo=cursor&logoColor=white" alt="Set Up with Cursor"></a>
+  <a href="https://deepwiki.com/simstudioai/sim" target="_blank" rel="noopener noreferrer"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
 </p>
 
 ### Build Workflows with Ease
@@ -52,111 +52,10 @@ Upload documents to a vector store and let agents answer questions grounded in y
 
 See [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md) for complete guide or [VERCEL_QUICKSTART.md](./VERCEL_QUICKSTART.md) for quick reference.
 
-### Self-hosted: NPM Package
+### Deploying with Neon and No Auth
 
-```bash
-npx simstudio
-```
-→ http://localhost:3000
-
-#### Note
-Docker must be installed and running on your machine.
-
-#### Options
-
-| Flag | Description |
-|------|-------------|
-| `-p, --port <port>` | Port to run Sim on (default `3000`) |
-| `--no-pull` | Skip pulling latest Docker images |
-
-### Self-hosted: Docker Compose
-
-```bash
-git clone https://github.com/simstudioai/sim.git && cd sim
-docker compose -f docker-compose.prod.yml up -d
-```
-
-Open [http://localhost:3000](http://localhost:3000)
-
-#### Using Local Models with Ollama
-
-Run Sim with local AI models using [Ollama](https://ollama.ai) - no external APIs required:
-
-```bash
-# Start with GPU support (automatically downloads gemma3:4b model)
-docker compose -f docker-compose.ollama.yml --profile setup up -d
-
-# For CPU-only systems:
-docker compose -f docker-compose.ollama.yml --profile cpu --profile setup up -d
-```
-
-Wait for the model to download, then visit [http://localhost:3000](http://localhost:3000). Add more models with:
-```bash
-docker compose -f docker-compose.ollama.yml exec ollama ollama pull llama3.1:8b
-```
-
-#### Using an External Ollama Instance
-
-If Ollama is running on your host machine, use `host.docker.internal` instead of `localhost`:
-
-```bash
-OLLAMA_URL=http://host.docker.internal:11434 docker compose -f docker-compose.prod.yml up -d
-```
-
-On Linux, use your host's IP address or add `extra_hosts: ["host.docker.internal:host-gateway"]` to the compose file.
-
-#### Using vLLM
-
-Sim supports [vLLM](https://docs.vllm.ai/) for self-hosted models. Set `VLLM_BASE_URL` and optionally `VLLM_API_KEY` in your environment.
-
-### Self-hosted: Dev Containers
-
-1. Open VS Code with the [Remote - Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
-2. Open the project and click "Reopen in Container" when prompted
-3. Run `bun run dev:full` in the terminal or use the `sim-start` alias
-   - This starts both the main application and the realtime socket server
-
-### Self-hosted: Manual Setup
-
-**Requirements:** [Bun](https://bun.sh/), [Node.js](https://nodejs.org/) v20+, PostgreSQL 12+ with [pgvector](https://github.com/pgvector/pgvector)
-
-1. Clone and install:
-
-```bash
-git clone https://github.com/simstudioai/sim.git
-cd sim
-bun install
-```
-
-2. Set up PostgreSQL with pgvector:
-
-```bash
-docker run --name simstudio-db -e POSTGRES_PASSWORD=your_password -e POSTGRES_DB=simstudio -p 5432:5432 -d pgvector/pgvector:pg17
-```
-
-Or install manually via the [pgvector guide](https://github.com/pgvector/pgvector#installation).
-
-3. Configure environment:
-
-```bash
-cp apps/sim/.env.example apps/sim/.env
-cp packages/db/.env.example packages/db/.env
-# Edit both .env files to set DATABASE_URL="postgresql://postgres:your_password@localhost:5432/simstudio"
-```
-
-4. Run migrations:
-
-```bash
-cd packages/db && bunx drizzle-kit migrate --config=./drizzle.config.ts
-```
-
-5. Start development servers:
-
-```bash
-bun run dev:full  # Starts both Next.js app and realtime socket server
-```
-
-Or run separately: `bun run dev` (Next.js) and `cd apps/sim && bun run dev:sockets` (realtime).
+Set `DISABLE_AUTH=true` and use a Neon `DATABASE_URL` that includes `sslmode=require`.
+Follow the step-by-step guide in [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md).
 
 ## Copilot API Keys
 
