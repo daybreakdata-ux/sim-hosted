@@ -4,5 +4,3 @@ helm/
 .husky/
 .cursor/
 .claude/
-scripts/*
-!scripts/vercel-build.sh
