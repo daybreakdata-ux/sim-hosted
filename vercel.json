@@ -1,6 +1,6 @@
 {
     "$schema": "https://openapi.vercel.sh/vercel.json",
-    "buildCommand": "(cd packages/db && bunx drizzle-kit migrate --config=./drizzle.config.ts) && bun install && (cd apps/sim && bun run build)",
+    "buildCommand": "bun run build",
     "installCommand": "bun install",
     "framework": null,
     "outputDirectory": "apps/sim/.next",
