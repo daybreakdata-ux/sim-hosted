@@ -1,0 +1,7 @@
+apps/docs/
+helm/
+.github/
+.husky/
+.cursor/
+.claude/
+scripts/
