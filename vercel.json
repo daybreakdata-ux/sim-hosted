@@ -1,6 +1,6 @@
 {
     "$schema": "https://openapi.vercel.sh/vercel.json",
-    "buildCommand": "bash scripts/vercel-prebuild.sh && bun install && cd apps/sim && bun run build",
+    "buildCommand": "bash ./scripts/vercel-prebuild.sh && bun install && cd apps/sim && bun run build",
     "installCommand": "bun install",
     "framework": null,
     "outputDirectory": "apps/sim/.next",
