@@ -1,6 +1,6 @@
 {
     "$schema": "https://openapi.vercel.sh/vercel.json",
-    "buildCommand": "NEXT_PUBLIC_APP_URL=https://$VERCEL_URL bunx turbo build --filter=sim...",
+    "buildCommand": "bash ./scripts/vercel-build.sh",
     "installCommand": "bun install",
     "framework": null,
     "outputDirectory": "apps/sim/.next",
